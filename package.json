@@ -1,0 +1,76 @@
+{
+	"name": "status-bar-extensions",
+	"displayName": "status-bar-extensions",
+	"description": "Add some extra features to the status bar",
+	"version": "0.0.1",
+	"engines": {
+		"vscode": "^1.51.0"
+	},
+	"categories": [
+		"Other"
+	],
+	"activationEvents": [
+    	"*"
+	],
+	"main": "./out/extension.js",
+	"contributes": {
+		"configuration": {
+			"title": "Status Bar Extensions",
+			"properties": {
+				"statusBarExtensions.diagnosticErrorEnabled": {
+					"type": "boolean",
+					"default": true,
+					"description": "Show Diagnostic errors on the Status Bar"
+				},
+				"statusBarExtensions.diagnosticErrorAlignment": {
+					"type": "string",
+					"default": "left",
+  					"enum": ["left", "right"],
+					"description": "Alignment of the Diagnostic Error on the Status Bar"
+				},
+				"statusBarExtensions.diagnosticErrorPriority": {
+					"type": "number",
+					"default": 0,
+					"description": "Higher number more to the left will be the Diagnostic Error item"
+				},
+				"statusBarExtensions.linesInfoEnabled": {
+					"type": "boolean",
+					"default": true,
+					"description": "Show Current Line / Total Line, Current Column on Status Bar"
+				},
+				"statusBarExtensions.linesInfoAlignment": {
+					"type": "string",
+					"default": "right",
+  					"enum": ["left", "right"],
+					"description": "Alignment of the Lines Info on the Status Bar"
+				},
+				"statusBarExtensions.linesInfoPriority": {
+					"type": "number",
+					"default": -1,
+					"description": "Higher number more to the left will be Lines Info item"
+				}
+			}
+		}
+	},
+	"scripts": {
+		"vscode:prepublish": "npm run compile",
+		"compile": "tsc -p ./",
+		"watch": "tsc -watch -p ./",
+		"pretest": "npm run compile && npm run lint",
+		"lint": "eslint src --ext ts",
+		"test": "node ./out/test/runTest.js"
+	},
+	"devDependencies": {
+		"@types/vscode": "^1.51.0",
+		"@types/glob": "^7.1.3",
+		"@types/mocha": "^8.0.0",
+		"@types/node": "^12.11.7",
+		"eslint": "^7.9.0",
+		"@typescript-eslint/eslint-plugin": "^4.1.1",
+		"@typescript-eslint/parser": "^4.1.1",
+		"glob": "^7.1.6",
+		"mocha": "^8.1.3",
+		"typescript": "^4.0.2",
+		"vscode-test": "^1.4.0"
+	}
+}
