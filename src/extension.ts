@@ -1,7 +1,7 @@
 import {languages, window, workspace, commands, Disposable, ExtensionContext, StatusBarAlignment, StatusBarItem} from 'vscode';
 
 export function activate(context: ExtensionContext) {
-	console.log('StatusBarExtensions activated')
+	console.log('StatusBarExtensions activated');
 
 	let statusBarDiagnosticError = new StatusBarDiagnosticError();
 	let statusBarLinesInfo = new StatusBarLinesInfo();
@@ -10,19 +10,19 @@ export function activate(context: ExtensionContext) {
 	context.subscriptions.push(statusBarLinesInfo);
 }
 
-function promptToReloadWindow() {
-  const action = 'Reload';
+function promptToReloadWindow() {	
+	const action = 'Reload';
 
-  window
-    .showInformationMessage(
-      `Reload window in order for change in extension Status Bar Extensions configuration to take effect.`,
-      action
-    )
-    .then(selectedAction => {
-      if (selectedAction === action) {
-        commands.executeCommand('workbench.action.reloadWindow');
-      }
-    });
+	window
+	.showInformationMessage(
+		`Reload window in order for change in extension Status Bar Extensions configuration to take effect.`,
+		action
+	)
+	.then(selectedAction => {
+		if (selectedAction === action) {
+		commands.executeCommand('workbench.action.reloadWindow');
+		}
+	});
 }
 
 export class StatusBarDiagnosticError {
@@ -46,6 +46,7 @@ export class StatusBarDiagnosticError {
 	private onConfigurationChange(event: any) {
 		if (event.affectsConfiguration('statusBarExtensions.diagnosticErrorAlignment') ||
 			event.affectsConfiguration('statusBarExtensions.diagnosticErrorPriority')) {
+			// console.log(event.affectsConfiguration('statusBarExtensions.linesInfoPriority'), event.affectsConfiguration('statusBarExtensions.linesInfoPriority'));
 			promptToReloadWindow();
         }
 	}
@@ -132,11 +133,19 @@ export class StatusBarLinesInfo {
 		let subscriptions: Disposable[] = [];
         window.onDidChangeTextEditorSelection(this.updateTotalLines, this, subscriptions);
 		window.onDidChangeActiveTextEditor(this.updateTotalLines, this, subscriptions);
-		workspace.onDidChangeConfiguration(promptToReloadWindow);
+		workspace.onDidChangeConfiguration(this.onConfigurationChange);
 
 		this.updateTotalLines();
 
         this.disposable = Disposable.from(...subscriptions);
+	}
+
+	private onConfigurationChange(event: any) {
+		if (event.affectsConfiguration('statusBarExtensions.linesInfoAlignment') ||
+			event.affectsConfiguration('statusBarExtensions.linesInfoPriority')) {
+			// console.log(event.affectsConfiguration('statusBarExtensions.linesInfoPriority'), event.affectsConfiguration('statusBarExtensions.linesInfoPriority'));
+			promptToReloadWindow();
+        }
 	}
 
 	private createStatusBarItem() {
